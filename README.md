@@ -7,10 +7,11 @@
 ```
 1. pip3 install pytube
 2. Качаем скрипт в место, куда будут загружаться видео
-3. Создаём файлик playlists.txt, где перечисляем плейлисты. На один плейлист - одна строка
-4. python3 script.py
-5. ???
-6 Profit
+3. Создаём файлик .json, куда кладем конфиг в формате {"<название канала>": ["playlist_id_1",  "playlist_id_2", ...], ...}
+4. cd downloader
+5. Если вам нужно получить конфиг по названию канала, то получаем youtube api token, делаем export YOUTUBE_API_TOKEN=<your_token> и делаем cat channels.txt | python get_playlists.py --output config.json. В channels.txt должны лежать ссылки на каналы в формате https://www.youtube.com/channel/UCV56iySuhfRQ1qSjXmAr1Yw
+6. python download_by_playlists.py --input config.json
+7. В папках, соответствующих названиям каналов будут лежать видосы по плейлистам
 ```
 Каждый плейлист будет в отдельной папке
 Если непонятно как делать playlists.txt - приложил пример
