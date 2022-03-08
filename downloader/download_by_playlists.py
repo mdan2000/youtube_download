@@ -5,6 +5,7 @@ import re
 import json
 
 from pathlib import Path
+from urllib.error import URLError
 
 
 YOUTUBE_STREAM_AUDIO = '140'
@@ -58,4 +59,10 @@ parser.add_argument('--input', dest='input',
 args = parser.parse_args()
 
 if __name__ == "__main__":
-    download(filestream=args.input)
+    ok = False
+    while not ok:
+        try:
+            download(filestream=args.input)
+            ok = True
+        except URLError:
+            ...
