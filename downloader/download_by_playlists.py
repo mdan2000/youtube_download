@@ -5,6 +5,7 @@ import re
 import json
 
 from pathlib import Path
+from http.client import IncompleteRead
 from urllib.error import URLError
 
 
@@ -54,15 +55,24 @@ def download(filestream):
             count_downloaded = 0
             count_in_playlist = len(playlist.video_urls)
             for video in playlist.videos:
-                video.streams.\
-                filter(type='video', progressive=True, file_extension='mp4').\
-                order_by('resolution').\
-                desc().\
-                first().\
-                download(path_for_saved)
+                tries = 0
+                while tries < 3:
+                    try:
+                        video.streams.\
+                        filter(type='video', progressive=True, file_extension='mp4').\
+                        order_by('resolution').\
+                        desc().\
+                        first().\
+                        download(path_for_saved)
+                        break
+                    except IncompleteRead:
+                        print(f"{TextColors.FAIL}Failed. Retrying...{TextColors.ENDC}")
+                        tries += 1
+                else:
+                    print(f"{TextColors.WARNING}Could not download afrer {tries} attempts. Skipping.")
 
                 count_downloaded += 1
-                print(f"{TextColors.OKGREEN}Downloaded {count_downloaded}/{count_in_playlist} videos{TextColors.ENDC}")
+                print(f"{TextColors.OKGREEN}Processed {count_downloaded}/{count_in_playlist} videos{TextColors.ENDC}")
 
 parser = argparse.ArgumentParser(description='Process cmdline arguments')
 
