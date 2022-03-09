@@ -65,4 +65,5 @@ if __name__ == "__main__":
             download(filestream=args.input)
             ok = True
         except URLError:
-            ...
+            print("!!! Lost connection. Retrying...")
+
