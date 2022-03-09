@@ -17,7 +17,7 @@ assert API_KEY
 MAX_RESULTS_PER_PAGE = 50
 PLAYLISTS_URL = "https://www.googleapis.com/youtube/v3/playlists"
 
-class bcolors:
+class TextColors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
     OKCYAN = '\033[96m'
@@ -79,14 +79,14 @@ def get_plists(input_stream, output_stream):
                         map(lambda item: {"id": item["id"], "title": item["snippet"]["title"]}, batch_items),
                     )
                 )
-                print(f"{bcolors.OKCYAN}[{channel_name}] Debug: loaded {len(batch_items)} playlists, next page is {next_page_token} {bcolors.ENDC}")
+                print(f"{TextColors.OKCYAN}[{channel_name}] Debug: loaded {len(batch_items)} playlists, next page is {next_page_token} {TextColors.ENDC}")
 
                 has_next_page = bool(next_page_token)
 
                 time.sleep(0.1)
-            print(f"{bcolors.OKGREEN}[{channel_name}] Found {len(plists[channel_name])} playlists {bcolors.ENDC}")
+            print(f"{TextColors.OKGREEN}[{channel_name}] Found {len(plists[channel_name])} playlists {TextColors.ENDC}")
         except Exception as exc:
-            print(f"{bcolors.FAIL}Error on getting playlists: {exc}{bcolors.ENDC}")
+            print(f"{TextColors.FAIL}Error on getting playlists: {exc}{TextColors.ENDC}")
 
     output_stream.write(json.dumps(plists))
 

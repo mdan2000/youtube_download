@@ -12,6 +12,19 @@ YOUTUBE_STREAM_AUDIO = '140'
 
 PLAYLIST_URL_FORMAT = 'https://www.youtube.com/playlist?list={}'
 
+
+class TextColors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
+
 def download(filestream):
     def _configure_ssl():
         import ssl
@@ -28,15 +41,14 @@ def download(filestream):
             playlist = pytube.Playlist(PLAYLIST_URL_FORMAT.format(playlist_id))
             playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
             title = playlist.title.replace('/', '-', 100).replace('\\', '-', 100)
-            print(f"--- Download playlist {title} ---")
-            #print(playlist)
+            print(f"{TextColors.OKCYAN}--- Download playlist {title} ---{TextColors.ENDC}")
 
             Path(f"./{channel_name}/{playlist_title}").mkdir(parents=True, exist_ok=True)
 
             path_for_saved = f'./{channel_name}/{title}'
 
-            print('Number of videos in playlist: %s' % len(playlist.video_urls))
-            #playlist.download_all()
+            print(f'{TextColors.OKCYAN}Number of videos in playlist: {len(playlist.video_urls)}{TextColors.ENDC}')
+
             count_downloaded = 0
             count_in_playlist = len(playlist.video_urls)
             for video in playlist.videos:
@@ -46,9 +58,9 @@ def download(filestream):
                 desc().\
                 first().\
                 download(path_for_saved)
-                #playlist.download()
+
                 count_downloaded += 1
-                print(f"Downloaded {count_downloaded}/{count_in_playlist} videos")
+                print(f"{TextColors.OKGREEN}Downloaded {count_downloaded}/{count_in_playlist} videos{TextColors.ENDC}")
 
 parser = argparse.ArgumentParser(description='Process cmdline arguments')
 
@@ -65,5 +77,4 @@ if __name__ == "__main__":
             download(filestream=args.input)
             ok = True
         except URLError:
-            print("!!! Lost connection. Retrying...")
-
+            print(f"{TextColors.WARNING}!!! Lost connection. Retrying...{TextColors.ENDC}")
