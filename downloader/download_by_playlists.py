@@ -43,7 +43,7 @@ def download(filestream):
             playlist_title = plst["title"]
             playlist = pytube.Playlist(PLAYLIST_URL_FORMAT.format(playlist_id))
             playlist._video_regex = re.compile(r"\"url\":\"(/watch\?v=[\w-]*)")
-            title = playlist.title.replace('/', '-', 100).replace('\\', '-', 100)
+            title = playlist_title.replace('/', '-', 100).replace('\\', '-', 100)
             print(f"{TextColors.OKCYAN}--- Download playlist {title} ---{TextColors.ENDC}")
 
             Path(f"./{channel_name}/{playlist_title}").mkdir(parents=True, exist_ok=True)
@@ -65,7 +65,7 @@ def download(filestream):
                         first().\
                         download(path_for_saved)
                         break
-                    except IncompleteRead:
+                    except (IncompleteRead, URLError):
                         print(f"{TextColors.FAIL}Failed. Retrying...{TextColors.ENDC}")
                         tries += 1
                 else:
