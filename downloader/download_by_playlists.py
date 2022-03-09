@@ -32,6 +32,8 @@ def download(filestream):
 
     _configure_ssl()
 
+    filestream.seek(0)
+
     config = json.loads(filestream.read())
 
     for channel_name, plist_ids in config.items():
