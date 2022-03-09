@@ -13,6 +13,12 @@
 6. python download_by_playlists.py --input config.json
 7. В папках, соответствующих названиям каналов будут лежать видосы по плейлистам
 ```
+Overall, можно запускать так:
+```
+export YOUTUBE_API_TOKEN=<your_token>
+cat channels.txt | python get_playlists.py | python download_by_playlists.py
+```
+
 Каждый плейлист будет в отдельной папке
 Если непонятно как делать playlists.txt - приложил пример
 
